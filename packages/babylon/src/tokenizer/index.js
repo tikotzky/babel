@@ -388,6 +388,7 @@ export default class Tokenizer {
   }
 
   getTokenFromCode(code) {
+    let next = this.input.charCodeAt(this.state.pos + 1);
     switch (code) {
       // The interpretation of a dot depends on whether it is followed
       // by a digit or another two dots.
@@ -412,7 +413,17 @@ export default class Tokenizer {
           return this.finishToken(tt.colon);
         }
 
-      case 63: ++this.state.pos; return this.finishToken(tt.question);
+      case 63: // '?'
+        if (next === 46) { // 46 = dot '.'
+          let next2 = this.input.charCodeAt(this.state.pos + 2);
+          if (next2 <= 48 || next2 >= 57) { // not a number after the .
+            this.state.pos += 2;
+            return this.finishToken(tt.questionDot);
+          }
+        }
+        ++this.state.pos;
+        return this.finishToken(tt.question);
+
       case 64: ++this.state.pos; return this.finishToken(tt.at);
 
       case 96: // '`'
@@ -420,7 +431,6 @@ export default class Tokenizer {
         return this.finishToken(tt.backQuote);
 
       case 48: // '0'
-        let next = this.input.charCodeAt(this.state.pos + 1);
         if (next === 120 || next === 88) return this.readRadixNumber(16); // '0x', '0X' - hex number
         if (next === 111 || next === 79) return this.readRadixNumber(8); // '0o', '0O' - octal number
         if (next === 98 || next === 66) return this.readRadixNumber(2); // '0b', '0B' - binary number

@@ -271,6 +271,12 @@ pp.parseSubscripts = function (base, startPos, startLoc, noCalls) {
       node.property = this.parseIdentifier(true);
       node.computed = false;
       base = this.finishNode(node, "MemberExpression");
+    } else if (this.eat(tt.questionDot)) {
+      let node = this.startNodeAt(startPos, startLoc);
+      node.object = base;
+      node.property = this.parseIdentifier(true);
+      node.computed = false;
+      base = this.finishNode(node, "MaybeMemberExpression");
     } else if (this.eat(tt.bracketL)) {
       let node = this.startNodeAt(startPos, startLoc);
       node.object = base;
