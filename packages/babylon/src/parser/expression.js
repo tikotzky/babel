@@ -284,6 +284,13 @@ pp.parseSubscripts = function (base, startPos, startLoc, noCalls) {
       node.computed = true;
       this.expect(tt.bracketR);
       base = this.finishNode(node, "MemberExpression");
+    } else if (this.eat(tt.questionBracketL)) {
+      let node = this.startNodeAt(startPos, startLoc);
+      node.object = base;
+      node.property = this.parseExpression();
+      node.computed = true;
+      this.expect(tt.bracketR);
+      base = this.finishNode(node, "MaybeMemberExpression");
     } else if (!noCalls && this.match(tt.parenL)) {
       let possibleAsync = this.state.potentialArrowAt === base.start && base.type === "Identifier" && base.name === "async" && !this.canInsertSemicolon();
       this.next();

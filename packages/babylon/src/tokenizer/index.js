@@ -421,6 +421,13 @@ export default class Tokenizer {
             return this.finishToken(tt.questionDot);
           }
         }
+        if (next === 91) { // 91 = bracketL '['
+          let next2 = this.input.charCodeAt(this.state.pos + 2);
+          if (next2 <= 48 || next2 >= 57) { // not a number after the [
+            this.state.pos += 2;
+            return this.finishToken(tt.questionBracketL);
+          }
+        }
         ++this.state.pos;
         return this.finishToken(tt.question);
 

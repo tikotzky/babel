@@ -46,6 +46,7 @@ export const types = {
 
   // Punctuation token types.
   bracketL: new TokenType("[", {beforeExpr: true, startsExpr: true}),
+  questionBracketL: new TokenType("?[", {beforeExpr: true, startsExpr: true}),
   bracketR: new TokenType("]"),
   braceL: new TokenType("{", {beforeExpr: true, startsExpr: true}),
   braceR: new TokenType("}"),
