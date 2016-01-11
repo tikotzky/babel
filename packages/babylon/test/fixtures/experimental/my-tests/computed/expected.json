@@ -43,7 +43,7 @@
           }
         },
         "expression": {
-          "type": "MaybeMemberExpression",
+          "type": "MemberExpression",
           "start": 0,
           "end": 5,
           "loc": {
@@ -88,7 +88,8 @@
             },
             "name": "y"
           },
-          "computed": true
+          "computed": true,
+          "nullSafe": true
         }
       }
     ],
